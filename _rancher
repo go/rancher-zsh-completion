@@ -91,7 +91,12 @@ __rancher_environments() {
     filter=$1; shift
     [[ $filter != "none" ]] && args=("-f $filter")
 
-    lines=(${(f)"$(_call_program commands rancher environment ls)"})
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher environment ls)"})
+    fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
@@ -186,7 +191,12 @@ __rancher_hosts() {
     local line s
     declare -a lines hosts args
 
-    lines=(${(f)"$(_call_program commands rancher host ls)"})
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher host ls)"})
+    fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
@@ -336,7 +346,12 @@ __rancher_stacks() {
     local line s
     declare -a lines stacks args
 
-    lines=(${(f)"$(_call_program commands rancher stack ls)"})
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher stack ls)"})
+    fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
@@ -431,7 +446,12 @@ __rancher_services() {
     declare -a lines services args
 
     ### TODO: Design to filtering service type lines
-    lines=(${(f)"$(_call_program commands rancher ps)"})
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher ps)"})
+    fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
@@ -466,7 +486,12 @@ __rancher_containers() {
     local line s
     declare -a lines containers args
 
-    lines=(${(f)"$(_call_program commands rancher ps -c)"})
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher ps -c)"})
+    fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
@@ -554,7 +579,7 @@ __rancher_commands() {
 #        (( $#_rancher_subcommands > 2 )) && _store_cache rancher_subcommands _rancher_subcommands
 #    fi
 
-# TODO: should be dynamically get commands as above
+    ### TODO: should be dynamically get commands as above
     if ( [[ ${+_rancher_subcommands} -eq 0 ]] || _cache_invalid rancher_subcommands) \
         && ! _retrieve_cache rancher_subcommands;
     then
