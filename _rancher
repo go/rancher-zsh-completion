@@ -1037,13 +1037,6 @@ _rancher() {
     local config=${opt_args[--config]}
     local rancher_options="${host:+--host $host} ${config:+--config $config}"
 
-#    echo ""
-#    echo "Line: $line"
-#    echo ""
-#    echo "State: $state"
-#    echo ""
-#    echo "Context: $curcontext"
-
     case $state in
         (command)
             __rancher_commands && ret=0
