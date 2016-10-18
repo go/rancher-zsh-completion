@@ -369,6 +369,7 @@ __rancher_stacks() {
     for line in $lines; do
         s="${line[${begin[ID]},${end[ID]}]%% ##}"
         s="$s:${(r:20:: :::)${${line[${begin[NAME]},${end[NAME]}]}%% ##}}"
+        s="$s , ${(r:20:: :::)${${line[${begin[STATE]},${end[STATE]}]}%% ##}}"
         stacks=($stacks $s)
     done
 
@@ -450,7 +451,7 @@ __rancher_services() {
     if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
         return 0
     else
-        lines=(${(f)"$(_call_program commands rancher ps)"})
+        lines=(${(f)"$(_call_program commands rancher ps -a)"})
     fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
@@ -469,6 +470,7 @@ __rancher_services() {
     for line in $lines; do
         s="${line[${begin[ID]},${end[ID]}]%% ##}"
         s="$s:${(r:30:: :::)${${line[${begin[NAME]},${end[NAME]}]}%% ##}}"
+        s="$s, ${(r:30:: :::)${${line[${begin[STATE]},${end[STATE]}]}%% ##}}"
         services=($services $s)
     done
 
@@ -490,7 +492,7 @@ __rancher_containers() {
     if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
         return 0
     else
-        lines=(${(f)"$(_call_program commands rancher ps -c)"})
+        lines=(${(f)"$(_call_program commands rancher ps -c -a)"})
     fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
@@ -509,7 +511,8 @@ __rancher_containers() {
     for line in $lines; do
         s="${line[${begin[ID]},${end[ID]}]%% ##}"
         s="$s:${(r:30:: :::)${${line[${begin[NAME]},${end[NAME]}]}%% ##}}"
-        s="$s, ${${${line[${begin[IMAGE]},${end[IMAGE]}]}/:/\\:}%% ##}"
+        s="$s, ${${${line[${begin[STATE]},${end[STATE]}]}/:/\\:}%% ##}"
+        s="$s , ${${${line[${begin[IMAGE]},${end[IMAGE]}]}/:/\\:}%% ##}"
         containers=($containers $s)
     done
 
