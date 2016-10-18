@@ -244,7 +244,7 @@ __rancher_host_subcommand() {
                 "($help)"--docker-version"[\[\$DOCKER_VERSION\]]" \
                 "($help)"--auth-key"[\[\$AUTH_KEY\]]" \
                 "($help)"--auth-certificate-authority"[\[\$AUTH_CERTIFICATE_AUTHORITY\]]" \
-                "($help)"--engine-install-url"[\[\$ENGINE_INSTALL_URL\]]" \
+                "($help)"--engine-install-url"[\[\$ENGINE_INSTALL_URL\]]:url:(http\:// https\://)" \
                 "($help)"--engine-registry-mirror"[\[\$ENGINE_REGISTRY_MIRROR\]]" \
                 "($help)"--engine-insecure-registry"[\[\$ENGINE_INSECURE_REGISTRY\]]" \
                 "($help)"--engine-storage-driver"[\[\$ENGINE_STORAGE_DRIVER\]]" \
@@ -280,7 +280,7 @@ __rancher_host_subcommand() {
                 "($help)"--amazonec2-private-address-only"[Only use a private IP address \[\$AMAZONEC2_PRIVATE_ADDRESS_ONLY\]]" \
                 "($help)"--amazonec2-request-spot-instance"[Set this flag to request spot instance \[\$AMAZONEC2_REQUEST_SPOT_INSTANCE\]]" \
                 "($help)"--amazonec2-vpc-id"[AWS VPC id \[\$AMAZONEC2_VPC_ID\]]" \
-                "($help)"--amazonec2-endpoint"[Optional endpoint URL (hostname only or fully qualified URI) \[\$AMAZONEC2_ENDPOINT\]]" \
+                "($help)"--amazonec2-endpoint"[Optional endpoint URL (hostname only or fully qualified URI) \[\$AMAZONEC2_ENDPOINT\]]:url:(http\:// https\://" \
                 "($help)"--amazonec2-region"[AWS region \[\$AMAZONEC2_REGION\]]" \
                 "($help)"--amazonec2-spot-price"[AWS spot instance bid price (in dollar) \[\$AMAZONEC2_SPOT_PRICE\]]" \
                 "($help)"--amazonec2-ami"[AWS machine image \[\$AMAZONEC2_AMI\]]" \
@@ -992,7 +992,7 @@ _rancher() {
         "($help --debug)"--debug"[Debug logging]" \
         "($help --config -c)"{--config,-c}"[Client configuration file (default \${HOME}/.rancher/cli.json) \[\$RANCHER_CLIENT_CONFIG\]]" \
         "($help --environment --env)"{--environment,--env}"[Environment name or ID \[\$RANCHER_ENVIRONMENT\]]:environment:__rancher_environments" \
-        "($help --url)"--url"[Specify the Rancher API endpoint URL \[\$RANCHER_URL\]]" \
+        "($help --url)"--url"[Specify the Rancher API endpoint URL \[\$RANCHER_URL\]]:url:(http\:// https\://)" \
         "($help --access-key)"--access-key"[Specify ancher API access key \[\$RANCHER_ACCESS_KEY\]]" \
         "($help --secret-key)"--secret-key"[Specify ancher API secret key \[\$RANCHER_SECRET_KEY\]]" \
         "($help --host)"--host"[Host used for rancher command \[\$RANCHER_rancher_HOST\]]:host:__rancher_hosts" \
