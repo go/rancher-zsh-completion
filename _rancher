@@ -695,7 +695,8 @@ __rancher_subcommand() {
             ;;
         (docker)
             _arguments $(__rancher_arguments) \
-                $opts_help && ret=0
+                $opts_help \
+                "($help -): :__docker_commands" && ret=0
             ;;
         (environment|env)
             local curcontext="$curcontext" state
