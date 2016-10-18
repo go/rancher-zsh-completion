@@ -721,7 +721,8 @@ __rancher_subcommand() {
             ;;
         (config)
             _arguments $(__rancher_arguments) \
-                $opts_help  && ret=0
+                $opts_help \
+                "($help --print)"--print"[Print the current configuration]" && ret=0
             ;;
         (docker)
             _arguments $(__rancher_arguments) \
