@@ -17,3 +17,6 @@ This is Zsh completion file for Rancher CLI that support commands completion and
 or
 # fpath=($fpath $PWD)
 ```
+
+## Sample
+<img src="https://github.com/go/rancher-zsh-completion/blob/master/images/sample.gif?raw=true" width=70% />
