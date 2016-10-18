@@ -13,5 +13,7 @@ This is Zsh completion file for Rancher CLI that support commands completion and
 2.Copy or Add fpath
 ```
 # cd rancher-zsh-completion
+# cp _rancher <YOUR_FPATH>
+or
 # fpath=($fpath $PWD)
 ```
