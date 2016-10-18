@@ -990,11 +990,11 @@ _rancher() {
         "(: -)"{--help,-h}"[Print usage]" \
         "($help --debug)"--debug"[Debug logging]" \
         "($help --config -c)"{--config,-c}"[Client configuration file (default \${HOME}/.rancher/cli.json) \[\$RANCHER_CLIENT_CONFIG\]]" \
-        "($help --environment --env)"{--environment,--env}"[Environment name or ID \[\$RANCHER_ENVIRONMENT\]]" \
+        "($help --environment --env)"{--environment,--env}"[Environment name or ID \[\$RANCHER_ENVIRONMENT\]]:environment:__rancher_environments" \
         "($help --url)"--url"[Specify the Rancher API endpoint URL \[\$RANCHER_URL\]]" \
         "($help --access-key)"--access-key"[Specify ancher API access key \[\$RANCHER_ACCESS_KEY\]]" \
         "($help --secret-key)"--secret-key"[Specify ancher API secret key \[\$RANCHER_SECRET_KEY\]]" \
-        "($help --host)"--host"[Host used for rancher command \[\$RANCHER_rancher_HOST\]]:host: " \
+        "($help --host)"--host"[Host used for rancher command \[\$RANCHER_rancher_HOST\]]:host:__rancher_hosts" \
         "($help --wait -w)"{--wait,-w}"[Wait for resource to reach resting state]" \
         "($help --wait-timeout)"--wait-timeout\ "[Timeout in seconds to wait (default: 6000)]" \
         "($help --wait-state)"--wait-state"[State to wait for (active, healthy, etc)]" \
