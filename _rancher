@@ -438,6 +438,89 @@ __rancher_stack_subcommand() {
 
 # EO stack
 
+# BO volume
+
+__rancher_volumes() {
+    [[ $PREFIX = -* ]] && return 1
+    integer ret=1
+    local line s
+    declare -a lines volumes args
+
+    ### TODO: Currently not supported Account base API
+    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+        return 0
+    else
+        lines=(${(f)"$(_call_program commands rancher volumes ls)"})
+    fi
+    # Parse header line to find columns
+    local i=1 j=1 k header=${lines[1]}
+    declare -A begin end
+    while (( j < ${#header} - 1 )); do
+        i=$(( j + ${${header[$j,-1]}[(i)[^ ]]} - 1 ))
+        j=$(( i + ${${header[$i,-1]}[(i)  ]} - 1 ))
+        k=$(( j + ${${header[$j,-1]}[(i)[^ ]]} - 2 ))
+        begin[${header[$i,$((j-1))]}]=$i
+        end[${header[$i,$((j-1))]}]=$k
+    done
+    end[${header[$i,$((j-1))]}]=-1
+    lines=(${lines[2,-1]})
+
+    # Host ID and Name
+    for line in $lines; do
+        s="${line[${begin[ID]},${end[ID]}]%% ##}"
+        s="$s:${(r:20:: :::)${${line[${begin[NAME]},${end[NAME]}]}%% ##}}"
+        s="$s , ${(r:20:: :::)${${line[${begin[STATE]},${end[STATE]}]}%% ##}}"
+        stacks=($stacks $s)
+    done
+
+    _describe -t stacks-list "stacks" stacks "$@" && ret=0
+    return ret
+}
+
+__rancher_volume_commands() {
+    local -a _rancher_volume_subcommands
+    _rancher_volume_subcommands=(
+        "ls:List volumes"
+        "rm:Delete volume"
+        "create:Create volume"
+    )
+    _describe -t rancher-volume-commands "rancher volume command" _rancher_volume_subcommands
+}
+
+__rancher_volume_subcommand() {
+    local -a _command_args opts_help
+    local expl help="--help"
+    integer ret=1
+
+    opts_help=("(: -)--help[Print usage]")
+
+    case "$words[1]" in
+        (ls)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help --all, -a)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
+                "($help --quit, -q)"{--quit,-q}"[Only display IDs]" \
+                "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" && ret=0
+            ;;
+        (rm)
+            _arguments $(__rancher_arguments) \
+                $opts_help && ret=0
+            ;;
+        (create)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help --driver)"--driver"[Specify volume driver name]" \
+                "($help --opt)"--opt"[Set driver specific key/value options]" && ret=0
+            ;;
+        (help)
+            _arguments $(__rancher_arguments) ":subcommand:__rancher_volume_commands" && ret=0
+            ;;
+    esac
+
+    return ret
+}
+# EO volume
+
 # BO service
 
 __rancher_services() {
@@ -593,10 +676,11 @@ __rancher_commands() {
             "environment:Interact with environments"
             "env:Interact with environments"
             "events:Displays resource change events"
+            "event:Displays resource change events"
             "exec:Run a command on a container"
             "export:Export configuration yml for a stack as a tar archive"
-            "host:Operations on hosts"
             "hosts:Operations on hosts"
+            "host:Operations on hosts"
             "logs:Fetch the logs of a container"
             "ps:Show services/containers"
             "restart:Restart service, container"
@@ -604,13 +688,15 @@ __rancher_commands() {
             "run:Run services"
             "scale:Set number of containers to run for a service"
             "ssh:SSH into host"
-            "stack:Operations on stacks"
             "stacks:Operations on stacks"
+            "stack:Operations on stacks"
             "start:Start or activate service, container, host"
             "activate:Start or activate service, container, host"
             "stop:Stop or deactivate service, container, host"
             "deactivate:Stop or deactivate service, container, host"
             "up:Bring all services up"
+            "volumes:Operations on volumes"
+            "volume:Operations on volumes"
             "inspect:View details for service, container, host, stack, machine"
             "wait:Wait for resources service, container, host, stack, machine"
         )
@@ -749,7 +835,7 @@ __rancher_subcommand() {
                     ;;
             esac
             ;;
-        (events)
+        (events|event)
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
@@ -957,6 +1043,22 @@ __rancher_subcommand() {
                 "($help --env-file -e)"{--env-file,-e}"[Specify a file from which to read environment variables]" \
                 "($help --file -f)"{--file,-f}"[Specify one or more alternate compose files (default: docker-compose.yml) \[\$COMPOSE_FILE\]]" \
                 "($help --stack -s)"{--stack,-s}"[Specify an alternate project name (default: directory name)]" && ret=0
+            ;;
+        (volumes|volume)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help -): :->command" \
+                "($help -)*:: :->option-or-argument" && ret=0
+
+            case $state in
+                (command)
+                    __rancher_volume_commands && ret=0
+                    ;;
+                (option-or-argument)
+                    curcontext=${curcontext%:*:*}:rancher-${words[-1]}:
+                    __rancher_volume_subcommand && ret=0
+                    ;;
+            esac
             ;;
         (inspect)
             _arguments $(__rancher_arguments) \
