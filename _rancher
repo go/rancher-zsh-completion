@@ -394,6 +394,8 @@ __rancher_stack_commands() {
     local -a _rancher_stack_subcommands
     _rancher_stack_subcommands=(
         "ls:List stacks"
+        "create:List stacks"
+        "help:Shows a list of commands or help for one command"
     )
     _describe -t rancher-stack-commands "rancher stack command" _rancher_stack_subcommands
 }
@@ -438,9 +440,20 @@ __rancher_stack_subcommand() {
         (ls)
             _arguments $(__rancher_arguments) \
                 $opts_help \
+                "($help --system, -s)"{--system,-s}"[Show system resources]" \
                 "($help --quiet, -q)"{--quiet,-q}"[Only display IDs]" \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
                 "($help):command: _command_names -e" && ret=0
+            ;;
+        (create)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help --start)"--start"[Start stack on create]" \
+                "($help --system, -s)"{--system,-s}"[Create a system stack]" \
+                "($help --empty, -e)"{--empty,-e}"[Create an empty stack]" \
+                "($help --quiet, -q)"{--quiet,-q}"[Only display IDs]" \
+                "($help --docker-compose, -f)"{--docker-compose,-f}"[Docker Compose file (default: \"docker-compose.yml\")]" \
+                "($help --rancher-compose, -r)"{--rancher-compose,-r}"[Rancher Compose file (default: \"rancher-compose.yml\")]" && ret=0
             ;;
         (help)
             _arguments $(__rancher_arguments) ":subcommand:__rancher_stack_commands" && ret=0
@@ -789,7 +802,8 @@ __rancher_subcommand() {
         (export)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help)"{--output,-o}"[Write to a file, instead of STDOUT]" && ret=0
+                "($help)"{--file,-f}"[Write to a file, instead of STDOUT]" \
+                "($help)"{--system,-s}"[If exporting the entire environment, include system]" && ret=0
             ;;
         (hosts|host)
             local curcontext="$curcontext" state
@@ -823,6 +837,7 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --all -a)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
+                "($help --system -s)"{--system,-s}"[Show system resources]" \
                 "($help --containers -c)"{--containers,-c}"[Display containers]" \
                 "($help --quiet -q)"{--quiet,-q}"[Only display IDs]" \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
@@ -833,7 +848,7 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container)]:type:(service container)" \
-                "($help --Batch-size)"--batch-size"[Number of containers to restart at a time (default: 1000)]" \
+                "($help --batch-size)"--batch-size"[Number of containers to restart at a time (default: 1000)]" \
                 "($help --interval)"--interval"[Interval in millisecond to wait between restarts (default: 1000)]" \
                 "($help)*: :->values" && ret=0
 
@@ -900,7 +915,12 @@ __rancher_subcommand() {
                 "($help)"{--workdir,-w}"[Working directory inside the container]" \
                 "($help)"--log-driver"[Logging driver for container]" \
                 "($help)"--log-opt"[Log driver options]" \
+                "($help)"{--volume,-v}"[Bind mount a volume]" \
                 "($help)"--net"[Connect a container to a network: host, none, bridge, managed (default: \"managed\")]:net:(host none bridge managed)" \
+                "($help)"--scale"[Number of containers to run (default: 1)]" \
+                "($help)"--schedule-global"[Run 1 container per host]" \
+                "($help)"{--lavel,-l}"[Add label in the form of key=value]" \
+                "($help)"--pull"[Always pull image on container start]" \
                 "($help): :__rancher_services" \
                 "($help):command: _command_names -e" && ret=0
             ;;
