@@ -753,7 +753,8 @@ __rancher_subcommand() {
         (docker)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help -): :__docker_commands" && ret=0
+                "($help -): :__docker_commands" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (environment|env)
             local curcontext="$curcontext" state
@@ -776,7 +777,8 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
-                "($help --reconnect -r)"{--reconnect,-r}"[Reconnect on error]" && ret=0
+                "($help --reconnect -r)"{--reconnect,-r}"[Reconnect on error]" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (exec)
             _arguments $(__rancher_arguments) \
@@ -814,7 +816,8 @@ __rancher_subcommand() {
                 "($help --tail)"--tail"[Number of lines to show from the end of the logs (default: 100)]" \
                 "($help --since)"--since"[Show logs since timestamp]" \
                 "($help --timestamps -t)"{--timestamps,-t}"[Show timestamps]" \
-                "($help -)*:services:__rancher_services" && ret=0
+                "($help -)*:services:__rancher_services" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (ps)
             _arguments $(__rancher_arguments) \
@@ -822,7 +825,8 @@ __rancher_subcommand() {
                 "($help --all -a)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
                 "($help --containers -c)"{--containers,-c}"[Display containers]" \
                 "($help --quiet -q)"{--quiet,-q}"[Only display IDs]" \
-                "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" && ret=0
+                "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (restart)
             _arguments $(__rancher_arguments) \
@@ -830,7 +834,8 @@ __rancher_subcommand() {
                 "($help --type)"--type"[Restrict restart to specific types (service, container)]:type:(service container)" \
                 "($help --Batch-size)"--batch-size"[Number of containers to restart at a time (default: 1000)]" \
                 "($help --interval)"--interval"[Interval in millisecond to wait between restarts (default: 1000)]" \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
@@ -849,7 +854,8 @@ __rancher_subcommand() {
                 $opts_help \
                 "($help --type)"--type"[Restrict delete to specific types]:type:(service container stack host machine)" \
                 "($help --stop -s)"{--stop,-s}"[Stop or deactivate resource first if needed before deleting]" \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
@@ -896,7 +902,8 @@ __rancher_subcommand() {
                 "($help)"--log-driver"[Logging driver for container]" \
                 "($help)"--log-opt"[Log driver options]" \
                 "($help)"--net"[Connect a container to a network: host, none, bridge, managed (default: \"managed\")]:net:(host none bridge managed)" \
-                "($help -): :__rancher_services" && ret=0
+                "($help): :__rancher_services" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (scale)
             _arguments $(__rancher_arguments) \
@@ -929,7 +936,8 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
@@ -949,7 +957,8 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
@@ -979,7 +988,8 @@ __rancher_subcommand() {
                 "($help --rancher-file)"--rancher-file"[Specify an alternate Rancher compose file (default: rancher-compose.yml)]" \
                 "($help --env-file -e)"{--env-file,-e}"[Specify a file from which to read environment variables]" \
                 "($help --file -f)"{--file,-f}"[Specify one or more alternate compose files (default: docker-compose.yml) \[\$COMPOSE_FILE\]]" \
-                "($help --stack -s)"{--stack,-s}"[Specify an alternate project name (default: directory name)]" && ret=0
+                "($help --stack -s)"{--stack,-s}"[Specify an alternate project name (default: directory name)]" \
+                "($help):command: _command_names -e" && ret=0
             ;;
         (volumes|volume)
             _arguments $(__rancher_arguments) \
@@ -1003,7 +1013,8 @@ __rancher_subcommand() {
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
                 "($help --links)"--links"[Include URLs to actions and links in resource output]" \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
@@ -1022,7 +1033,8 @@ __rancher_subcommand() {
         (wait)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help -)*: :->values" && ret=0
+                "($help)*: :->values" \
+                "($help):command: _command_names -e" && ret=0
 
             case $state in
                 (values)
