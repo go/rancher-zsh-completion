@@ -608,7 +608,7 @@ __rancher_containers() {
     if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
         return 0
     else
-        lines=(${(f)"$(_call_program commands rancher ps -c -a)"})
+        lines=(${(f)"$(_call_program commands rancher ps -c -a -s)"})
     fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
