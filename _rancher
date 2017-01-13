@@ -201,7 +201,7 @@ __rancher_hosts() {
     if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
         return 0
     else
-        lines=(${(f)"$(_call_program commands rancher host ls)"})
+        lines=(${(f)"$(_call_program commands rancher host ls -a)"})
     fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
