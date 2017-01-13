@@ -886,7 +886,7 @@ __rancher_subcommand() {
                     elif [[ ${words[(r)host]} == host ]]; then
                         __rancher_hosts && ret=0
                     else
-                        __rancher_services && __rancher_containers && __rancher_stacks && __rancher_hosts && ret=0
+                        __rancher_hosts && __rancher_containers && __rancher_stacks && __rancher_services && ret=0
                     fi
                     ;;
             esac
