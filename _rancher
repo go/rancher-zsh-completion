@@ -823,8 +823,7 @@ __rancher_subcommand() {
                 "($help --tail)"--tail"[Number of lines to show from the end of the logs (default: 100)]" \
                 "($help --since)"--since"[Show logs since timestamp]" \
                 "($help --timestamps -t)"{--timestamps,-t}"[Show timestamps]" \
-                "($help -)*:services:__rancher_services" \
-                "($help):command: _command_names -e" && ret=0
+                "($help -)*:services:__rancher_services" && ret=0
             ;;
         (ps)
             _arguments $(__rancher_arguments) \
@@ -836,13 +835,13 @@ __rancher_subcommand() {
                 "($help):command: _command_names -e" && ret=0
             ;;
         (restart)
+            local state
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container)]:type:(service container)" \
                 "($help --Batch-size)"--batch-size"[Number of containers to restart at a time (default: 1000)]" \
                 "($help --interval)"--interval"[Interval in millisecond to wait between restarts (default: 1000)]" \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
@@ -861,8 +860,7 @@ __rancher_subcommand() {
                 $opts_help \
                 "($help --type)"--type"[Restrict delete to specific types]:type:(service container stack host machine)" \
                 "($help --stop -s)"{--stop,-s}"[Stop or deactivate resource first if needed before deleting]" \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
@@ -943,8 +941,7 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host, stack)]:type:(service container host stack)" \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
@@ -964,8 +961,7 @@ __rancher_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host, stack)]:type:(service container host stack)" \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
@@ -1020,8 +1016,7 @@ __rancher_subcommand() {
                 "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
                 "($help --links)"--links"[Include URLs to actions and links in resource output]" \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
@@ -1040,8 +1035,7 @@ __rancher_subcommand() {
         (wait)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help)*: :->values" \
-                "($help):command: _command_names -e" && ret=0
+                "($help)*: :->values" && ret=0
 
             case $state in
                 (values)
