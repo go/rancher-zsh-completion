@@ -942,7 +942,7 @@ __rancher_subcommand() {
         (start|activate)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
+                "($help --type)"--type"[Restrict restart to specific types (service, container, host, stack)]:type:(service container host stack)" \
                 "($help)*: :->values" \
                 "($help):command: _command_names -e" && ret=0
 
@@ -963,7 +963,7 @@ __rancher_subcommand() {
         (stop|deactivate)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help --type)"--type"[Restrict restart to specific types (service, container, host)]:type:(service container host)" \
+                "($help --type)"--type"[Restrict restart to specific types (service, container, host, stack)]:type:(service container host stack)" \
                 "($help)*: :->values" \
                 "($help):command: _command_names -e" && ret=0
 
