@@ -138,7 +138,6 @@ __rancher_environment_commands() {
         "ls:List environments"
         "create:Create an environment"
         "rm:Remove environment(s)"
-        "update:Update environment"
         "deactivate:Deactivate environment(s)"
         "activate:Activate environment(s)"
     )
@@ -154,7 +153,7 @@ __rancher_environment_subcommand() {
 
     case "$words[1]" in
         (ls)
-             _arguments $(__rancher_arguments) \
+            _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
                 "($help)"{--quiet,-q}"[Only display IDs]" \
@@ -162,18 +161,13 @@ __rancher_environment_subcommand() {
                 "($help):command: _command_names -e" && ret=0
             ;;
         (create)
-             _arguments $(__rancher_arguments) \
+            _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help)"{--orchestration,-o}"[Orchestration framework]" && ret=0
             ;;
         (rm)
             _arguments $(__rancher_arguments) \
                 $opts_help && ret=0
-            ;;
-        (update)
-            _arguments $(__rancher_arguments) \
-                $opts_help \
-                "($help)"{--orchestration,-o}"[Orchestration framework]" && ret=0
             ;;
         (deactivate)
              _arguments $(__rancher_arguments) \
