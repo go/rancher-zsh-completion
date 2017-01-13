@@ -514,7 +514,7 @@ __rancher_volume_subcommand() {
             _arguments $(__rancher_arguments) \
                 $opts_help \
                 "($help --all, -a)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
-                "($help --quit, -q)"{--quit,-q}"[Only display IDs]" \
+                "($help --quiet, -q)"{--quiet,-q}"[Only display IDs]" \
                 "($help --format)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" && ret=0
             ;;
         (rm)
