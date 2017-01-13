@@ -471,13 +471,13 @@ __rancher_volumes() {
     [[ $PREFIX = -* ]] && return 1
     integer ret=1
     local line s
-    declare -a lines volumes args
+    declare -a lines volumes
 
     ### TODO: Currently not supported Account base API
     if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
         return 0
     else
-        lines=(${(f)"$(_call_program commands rancher volumes ls)"})
+        lines=(${(f)"$(_call_program commands rancher $rancher_options volumes ls -a)"})
     fi
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
@@ -492,15 +492,18 @@ __rancher_volumes() {
     end[${header[$i,$((j-1))]}]=-1
     lines=(${lines[2,-1]})
 
-    # Host ID and Name
+    # Volume ID, and STATE
     for line in $lines; do
         s="${line[${begin[ID]},${end[ID]}]%% ##}"
-        s="$s:${(r:20:: :::)${${line[${begin[NAME]},${end[NAME]}]}%% ##}}"
-        s="$s , ${(r:20:: :::)${${line[${begin[STATE]},${end[STATE]}]}%% ##}}"
-        stacks=($stacks $s)
+        s="$s:${(r:70:: :::)${${line[${begin[NAME]},${end[NAME]}]}}%% ##}"
+        s="$s, ${(l:10:: :::)${${line[${begin[STATE]},${end[STATE]}]}}%% ##}"
+        s="$s, ${(l:8:: :::)${${line[${begin[DRIVER]},${end[DRIVER]}]}}%% ##}"
+        s="$s, ${(r:60:: :::)${${line[${begin[DETAIL]},${end[DETAIL]}]}}%% ##}"
+        volumes=($volumes $s)
     done
 
-    _describe -t stacks-list "stacks" stacks "$@" && ret=0
+    _describe -t volumes-list "volumes" volumes && ret=0
+
     return ret
 }
 
@@ -532,7 +535,8 @@ __rancher_volume_subcommand() {
             ;;
         (rm)
             _arguments $(__rancher_arguments) \
-                $opts_help && ret=0
+                $opts_help \
+                "($help -)*:volumes:__rancher_volumes" && ret=0
             ;;
         (create)
             _arguments $(__rancher_arguments) \
