@@ -137,6 +137,8 @@ __rancher_environment_commands() {
     _rancher_environment_subcommands=(
         "ls:List environments"
         "create:Create an environment"
+        "templates:Interact with environment templates"
+        "template:Interact with environment templates"
         "rm:Remove environment(s)"
         "deactivate:Deactivate environment(s)"
         "activate:Activate environment(s)"
@@ -163,7 +165,29 @@ __rancher_environment_subcommand() {
         (create)
             _arguments $(__rancher_arguments) \
                 $opts_help \
-                "($help)"{--orchestration,-o}"[Orchestration framework]" && ret=0
+                "($help)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
+                "($help)"{--quiet,-q}"[Only display IDs]" \
+                "($help)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
+                "($help):command: _command_names -e" && ret=0
+            ;;
+        (templates|template)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help)"{--all,-a}"[Show stop/inactive and recently removed resources]" \
+                "($help)"{--quiet,-q}"[Only display IDs]" \
+                "($help)"--format"['json' or Custom format: {{.Id}} {{.Name}}]" \
+                "($help -): :->command" \
+                "($help -)*:: :->option-or-argument" && ret=0
+            
+            case $state in
+                (command)
+                    __rancher_environment_subsubcommands && ret=0
+                    ;;
+                (option-or-argument)
+                    curcontext=${curcontext%:*:*}:rancher-${words[-1]}:
+                    __rancher_environment_subsubcommand && ret=0
+                    ;;
+            esac
             ;;
         (rm)
             _arguments $(__rancher_arguments) \
@@ -181,6 +205,39 @@ __rancher_environment_subcommand() {
             ;;
         (help)
             _arguments $(__rancher_arguments) ":subcommand:__rancher_environment_commands" && ret=0
+            ;;
+    esac
+
+    return ret
+}
+
+__rancher_environment_subsubcommands() {
+    local -a _rancher_environment_subsubcommands
+    _rancher_environment_subsubcommands=(
+        "export:Export an environment template to STDOUT"
+        "import:Import an environment template to from file"
+    )
+    _describe -t rancher-environment-subsubcommands "rancher environment subcommand" _rancher_environment_subsubcommands
+}
+
+__rancher_environment_subsubcommand() {
+    local -a _command_args opts_help
+    local expl help="--help"
+    integer ret=1
+
+    opts_help=("(: -)--help[Print usage]")
+
+    case "$words[1]" in
+        (export)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help -)*:environment:__rancher_environments" && ret=0
+            ;;
+        (import)
+            _arguments $(__rancher_arguments) \
+                $opts_help \
+                "($help)"--public"[Make template public]" \
+                "($help):command: _command_names -e" && ret=0
             ;;
     esac
 
