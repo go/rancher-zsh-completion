@@ -51,7 +51,8 @@ __rancher_catalog_commands() {
     local -a _rancher_catalog_subcommands
     _rancher_catalog_subcommands=(
         "ls:List catalog templates"
-        "install: Install catalog template"
+        "install:Install catalog template"
+        "help:Shows a list of commands or help for one command"
     )
     _describe -t rancher-catalog-commands "rancher catalog command" _rancher_catalog_subcommands
 }
