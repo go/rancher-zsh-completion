@@ -532,7 +532,7 @@ __rancher_stack_commands() {
     local -a _rancher_stack_subcommands
     _rancher_stack_subcommands=(
         "ls:List stacks"
-        "create:List stacks"
+        "create:Create a stacks"
         "help:Shows a list of commands or help for one command"
     )
     _describe -t rancher-stack-commands "rancher stack command" _rancher_stack_subcommands
