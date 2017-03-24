@@ -104,11 +104,15 @@ __rancher_environments() {
     [[ $filter != "none" ]] && args=("-f $filter")
 
     ### TODO: Currently not supported Account base API
-    if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
-        return 0
-    else
-        lines=(${(f)"$(_call_program commands rancher environment ls)"})
-    fi
+    ###       Enabled environment completion as experimental
+    #if [[ -z "${(M)RANCHER_URL:#*project*}" ]] then
+    #    return 0
+    #else
+    #    lines=(${(f)"$(_call_program commands rancher environment ls)"})
+    #fi
+    
+    lines=(${(f)"$(_call_program commands rancher environment ls)"})
+
     # Parse header line to find columns
     local i=1 j=1 k header=${lines[1]}
     declare -A begin end
